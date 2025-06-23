@@ -218,13 +218,21 @@ lemma "
   apply (rule hoare_kcomp [where R="(1 ≤ x ∧ 1 ≤ y)⇧e"])
   apply (rule hoare_assignI) 
   apply expr_auto
-  apply wlp_full
-  apply (simp add: fbox_def assigns_def loopi_def)
+  apply (rule hoare_bwd_assign)
+  apply (rule hoare_choice)
+  apply (subst change_loopI[where I="(1 ≤ x ∧ 1 ≤ y)⇧e"])
+  apply (rule hoare_loopI)
+  apply (rule hoare_assignI)
   apply expr_auto
-  apply (induct x arbitrary: y)
-  apply (simp add: expr_defs)
   apply expr_auto
-  oops
+  apply expr_auto
+  apply (rule hoare_assignI)
+  apply expr_auto
+  done
+
+(*
+  you can use intro_loops instead hoare_loopI
+*)
 
 subsection ‹ Nondeterministic assignment ›
 
